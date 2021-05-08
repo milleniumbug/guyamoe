@@ -27,7 +27,7 @@ server {
 
 	location ~ ^/static/(.*) {
 		root /home/milleniumbug/mahoushoujobu/app;
-		try_files /static_global/$1 /homepage/static/$1 /reader/static/$1 @process_in_app;
+		try_files /static_global/$1 /homepage/static/$1 /reader/static/$1 /static/$1 @process_in_app;
 	}
 
 	location / {

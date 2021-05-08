@@ -3,7 +3,7 @@ import os
 from .base import *
 
 
-CANONICAL_ROOT_DOMAIN = "guya.moe"
+CANONICAL_ROOT_DOMAIN = "mahoushoujobu.com"
 SECURE_HSTS_SECONDS = 60
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
@@ -19,26 +19,11 @@ X_FRAME_OPTIONS = "ALLOW"
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    "guya.moe",
-    "www.guya.moe",
-    "kaguya.guya.moe",
-    "www.kaguya.guya.moe",
-    "ka.guya.moe",
-    "www.ka.guya.moe",
-    "ice.guya.moe",
-    "www.ice.guya.moe",
-    "baka.guya.moe",
-    "www.baka.guya.moe",
-    "trash.guya.moe",
-    "www.trash.guya.moe",
-    "dog.guya.moe",
-    "www.dog.guya.moe",
-    "kuu.guya.moe",
-    "www.kuu.guya.moe",
+    "mahoushoujobu.com",
     "localhost",
 ]
 
-CANONICAL_SITE_NAME = "guya.moe"
+CANONICAL_SITE_NAME = "mahoushoujobu.com"
 
 LOGGING = {
     "version": 1,
@@ -71,13 +56,8 @@ CACHES = {
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": os.environ.get("DB_NAME"),
-        "USER": os.environ.get("DB_USER"),
-        "PASSWORD": os.environ.get("DB_PASS"),
-        "HOST": "localhost",
-        "PORT": "",
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
     }
 }
 
-OCR_SCRIPT_PATH = os.path.join(PARENT_DIR, "ocr_tool.sh")

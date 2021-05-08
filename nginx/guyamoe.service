@@ -8,7 +8,7 @@ Type=notify
 Restart=on-failure
 RestartSec=2
 User=milleniumbug
-Environment="ALLOWED_HOSTS=mahoushoujobu.com"
+Environment="ALLOWED_HOSTS=mahoushoujobu.com" "DJANGO_SETTINGS_MODULE=guyamoe.settings.prod"
 ExecStart=/home/milleniumbug/mahoushoujobu/bin/uwsgi --ini /home/milleniumbug/mahoushoujobu/app/nginx/uwsgi.ini --module guyamoe.wsgi
 StandardOutput=syslog
 StandardError=syslog
