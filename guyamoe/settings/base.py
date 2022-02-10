@@ -156,10 +156,10 @@ MAIL_DISCORD_WEBHOOK_TOKEN = os.environ.get("MAIL_DISCORD_WEBHOOK_TOKEN", "")
 
 BRANDING_NAME = "mahoushoujo.bu"
 BRANDING_DESCRIPTION = ""
-BRANDING_IMAGE_URL = "https://mahoushoujobu.com/static/img/mt-cover.png"
+BRANDING_IMAGE_URL = "https://mahoushoujobu.com/static/img/logo-mt-squared-large.png"
 
 HOME_BRANDING_NAME = "Home for scanlations of Magical Trans! and Bro Girl | mahoushoujobu.com"
 HOME_BRANDING_DESCRIPTION = "Read Magical Trans! and Bro Girl."
-HOME_BRANDING_IMAGE_URL = "https://mahoushoujobu.com/static/img/mt-cover.png"
+HOME_BRANDING_IMAGE_URL = "https://mahoushoujobu.com/static/img/logo-mt-squared-large.png"
 
 IMAGE_PROXY_URL = "https://proxy.f-ck.me"
