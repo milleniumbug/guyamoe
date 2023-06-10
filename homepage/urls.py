@@ -20,4 +20,5 @@ urlpatterns = [
     ),
     path("latest/", views.latest, name="site-main-series-latest"),
     path("random/", views.random, name="site-main-series-random"),
+    path("discord/", views.redirect_to_discord, name="discord-redirect")
 ]

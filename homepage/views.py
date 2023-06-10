@@ -11,7 +11,7 @@ from homepage.middleware import ForwardParametersMiddleware
 from reader.middleware import OnlineNowMiddleware
 from reader.models import Chapter, Volume
 from reader.views import series_page_data
-
+from misc.models import Variable
 
 @staff_member_required
 @cache_control(public=True, max_age=30, s_maxage=30)
@@ -142,3 +142,9 @@ def random(request):
 
 def handle404(request, exception):
     return render(request, "homepage/how_cute_404.html", status=404)
+
+
+def redirect_to_discord(request):
+    variable = Variable.objects.get(key="discord-url")
+    url = variable.value
+    return redirect(url)
