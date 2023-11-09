@@ -12,9 +12,11 @@ class CorrectMimeTypeFeed(DefaultFeed):
 
 class AllChaptersFeed(Feed):
     feed_type = CorrectMimeTypeFeed
-    link = "/all/"
     title = "All Chapter updates"
     description = "Latest chapter updates"
+
+    def link(self, obj):
+        return f"https://mahoushoujobu.com/"
 
     def items(self):
         return Chapter.objects.order_by("-uploaded_on")
