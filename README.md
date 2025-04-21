@@ -110,7 +110,7 @@ Set the correct permissions
 ```
 chmod +x nginx/start.sh
 sudo chown milleniumbug:www-data nginx/socket
-sudo chown g+s nginx/socket
+sudo chmod g+sw nginx/socket
 ```
 
 Copy the config to appropriate places
