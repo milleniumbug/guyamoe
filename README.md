@@ -111,6 +111,8 @@ Set the correct permissions
 chmod +x nginx/start.sh
 sudo chown milleniumbug:www-data nginx/socket
 sudo chmod g+sw nginx/socket
+sudo chown milleniumbug:www-data -R media/manga
+sudo chmod g+s -R media/manga
 ```
 
 Copy the config to appropriate places
