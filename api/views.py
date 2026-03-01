@@ -2,16 +2,19 @@ import hashlib
 import json
 import os
 import time
+from typing import Optional
 import zipfile
 from datetime import datetime
 
 import natsort
-from discord import Embed, RequestsWebhookAdapter, Webhook
+from discord import Embed, SyncWebhook, Webhook
 from django.conf import settings
 from django.core.cache import cache
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.views.decorators.cache import cache_control
 from django.views.decorators.csrf import csrf_exempt
+import api.exporters.tumblr as tumblr
+import api.exporters.bluesky as bluesky
 
 from reader.models import Chapter, ChapterIndex, Group, Series, Volume, Person
 from reader.users_cache_lib import get_user_ip
@@ -180,11 +183,11 @@ def post_prerelease_to_discord(uri_scheme: str, chapter):
     if not settings.DISCORD_PRERELEASE_WEBHOOK_URL:
         print("Discord webhook url for prerelease is not set.")
         return
-    webhook_id, webhook_token = get_webhook_id_token_from_url(settings.DISCORD_PRERELEASE_WEBHOOK_URL)
-    webhook = Webhook.partial(webhook_id, webhook_token, adapter=RequestsWebhookAdapter())
+    webhook_id, webhook_token = get_webhook_id_token_from_url(settings.DISCORD_NSFW_PRERELEASE_WEBHOOK_URL if chapter.series.is_nsfw else settings.DISCORD_PRERELEASE_WEBHOOK_URL)
+    webhook = SyncWebhook .partial(webhook_id, webhook_token)
 
     root = f"{uri_scheme}://{settings.CANONICAL_ROOT_DOMAIN}"
-    url = f"{root}{chapter.get_absolute_url()}"
+    url = f"{root}{chapter.get_absolute_url()}" if chapter.is_public else f"{root}{chapter.get_private_absolute_url()}"
     series_url = f"{root}{chapter.series.get_absolute_url()}"
     author_url = f"{root}{chapter.series.author.get_absolute_url()}"
     artist_url = f"{root}{chapter.series.artist.get_absolute_url()}"
@@ -194,7 +197,7 @@ def post_prerelease_to_discord(uri_scheme: str, chapter):
 
     em = Embed(
         color=0x000000,
-        title=f"Please PR this new release!  Chapter {chapter.clean_chapter_number()} {version_label} of {chapter.series.name}",
+        title=f"Ch. {chapter.clean_chapter_number()} {version_label} of {chapter.series.name} -  Please PR this new release!",
         description=f"{url}\n\n"
                     f"[Read other chapters]({series_url})\n"
                     f"[Read other series by this author]({author_url})\n\n"
@@ -210,17 +213,18 @@ def post_prerelease_to_discord(uri_scheme: str, chapter):
     em.set_image(url=chapter_1st_image)
 
     # Only ping if it is the first version of the chapter
-    ping_str = None if chapter.version else settings.DISCORD_PING_QC_ROLE
+    ping_role = settings.DISCORD_PING_NSFW_QC_ROLE if chapter.series.is_nsfw else settings.DISCORD_PING_QC_ROLE
+    ping_str = None if chapter.version else ping_role
     webhook.send(content=ping_str, embed=em, username=settings.DISCORD_USERNAME, avatar_url=site_log_url)
 
 
-def post_release_to_discord(uri_scheme: str, chapter):
+def post_release_to_discord(uri_scheme: str, chapter: Chapter, tumblr_post_url: Optional[str], bluesky_post_url: Optional[str]):
     webhook_url = settings.DISCORD_NSFW_RELEASE_WEBHOOK_URL if chapter.series.is_nsfw else settings.DISCORD_RELEASE_WEBHOOK_URL
     if not webhook_url:
         print("Discord webhook url for release is not set.")
         return
     webhook_id, webhook_token = get_webhook_id_token_from_url(webhook_url)
-    webhook = Webhook.partial(webhook_id, webhook_token, adapter=RequestsWebhookAdapter())
+    webhook = SyncWebhook.partial(webhook_id, webhook_token)
 
     root = f"{uri_scheme}://{settings.CANONICAL_ROOT_DOMAIN}"
     url = f"{root}{chapter.get_absolute_url()}"
@@ -233,6 +237,11 @@ def post_release_to_discord(uri_scheme: str, chapter):
     links = f"{url}\n"
     if chapter.scraper_hash:
         links += f"https://mangadex.org/chapter/{chapter.scraper_hash}\n" 
+    if tumblr_post_url:
+        links += f"{tumblr_post_url}\n" 
+    if bluesky_post_url:
+        links += f"{bluesky_post_url}\n" 
+
     
     title =  f"{chapter.series.name} - Oneshot" if chapter.chapter_number == 0 and chapter.series.is_oneshot else f"{chapter.series.name} - {chapter.clean_title()}"
     em = Embed(
@@ -292,7 +301,12 @@ def publish_chapter(request, series_slug, chapter):
         chapter.is_public = True
         chapter.save()
         
-        post_release_to_discord(request.scheme, chapter)
+        tumblr_post_url = None
+        bluesky_post_url = None
+        if not series.is_nsfw:
+            tumblr_post_url = tumblr.publish_post(request.scheme, chapter)
+            bluesky_post_url = bluesky.publish_post(request.scheme, chapter)
+        post_release_to_discord(request.scheme, chapter, tumblr_post_url, bluesky_post_url)
         return HttpResponse(
             json.dumps({"response": "success"}), content_type="application/json"
         )
@@ -424,10 +438,9 @@ def black_hole_mail(request):
                 content_type="application/json",
             )
         try:
-            webhook = Webhook.partial(
+            webhook = SyncWebhook.partial(
                 settings.MAIL_DISCORD_WEBHOOK_ID,
                 settings.MAIL_DISCORD_WEBHOOK_TOKEN,
-                adapter=RequestsWebhookAdapter(),
             )
             em = Embed(
                 color=0x000000,

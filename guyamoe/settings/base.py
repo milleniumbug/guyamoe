@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     "homepage.apps.HomepageConfig",
     "mangadex.apps.MangadexConfig",
     "misc.apps.MiscConfig",
-    "proxy.apps.ProxyConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -157,17 +156,30 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 ALLOWS_DOWNLOAD_AS_ZIP = True
 
+# Public client id used for uploading to Mangadex
+MANGADEX_PUBLIC_CLIENT_ID = os.environ.get("MANGADEX_PUBLIC_CLIENT_ID", "")
+MANGADEX_PUBLIC_CLIENT_SECRET = os.environ.get("MANGADEX_PUBLIC_CLIENT_SECRET", "")
+
 IMGUR_CLIENT_ID = os.environ.get("IMGUR_CLIENT_ID", "")
 DISCORD_RELEASE_WEBHOOK_URL = os.environ.get("DISCORD_RELEASE_WEBHOOK_URL", "")
 DISCORD_NSFW_RELEASE_WEBHOOK_URL = os.environ.get("DISCORD_NSFW_RELEASE_WEBHOOK_URL", "")
 DISCORD_PRERELEASE_WEBHOOK_URL = os.environ.get("DISCORD_PRERELEASE_WEBHOOK_URL", "")
 DISCORD_USERNAME = "ElPsyKongroo"
+DISCORD_NSFW_PRERELEASE_WEBHOOK_URL = os.environ.get("DISCORD_NSFW_PRERELEASE_WEBHOOK_URL", "")
+DISCORD_USERNAME = "Danke.moe"
 DISCORD_PING_NEW_RELEASE = "<@&797689910890594305>" # @AllRelease
 DISCORD_PING_NEW_NSFW_RELEASE = "<@&992904261480497292>" # @NSFW Updates 
 DISCORD_PING_ONESHOT = "<@&797689909276180510>" # @OneShot
 DISCORD_PING_QC_ROLE = "<@&796228557256654858>"  # @Quality Control/Proofreading, to find that code, enter \@therole on discord
+DISCORD_PING_NSFW_QC_ROLE = "<@&1120064620107927624>"  # @NSFW Quality Control/Proofreading, to find that code, enter \@therole on discord
 DISCORD_PRERELEASE_MESSAGE = "If you found an issue with this release <:bonk:807730387115442257>, share it on <#875807668390993920>"
 
+# Must contains the consumer key, consumer secret, Oauth token, Oauth secret and the blog name.
+# These 5 parameters must be separated by ":".
+TUMBLR_CREDENTIALS = os.environ.get("TUMBLR_CREDENTIALS", "")
+
+BLUESKY_USERNAME = os.environ.get("BLUESKY_USERNAME", "")
+BLUESKY_PASSWORD = os.environ.get("BLUESKY_PASSWORD", "")
 BRANDING_NAME = "ElPsyKongroo"
 BRANDING_DESCRIPTION = "El. Psy. Kongroo."
 BRANDING_IMAGE_URL = "https://danke.moe/static/img/thumbnail.png"
