@@ -161,18 +161,18 @@ IMGUR_CLIENT_ID = os.environ.get("IMGUR_CLIENT_ID", "")
 DISCORD_RELEASE_WEBHOOK_URL = os.environ.get("DISCORD_RELEASE_WEBHOOK_URL", "")
 DISCORD_NSFW_RELEASE_WEBHOOK_URL = os.environ.get("DISCORD_NSFW_RELEASE_WEBHOOK_URL", "")
 DISCORD_PRERELEASE_WEBHOOK_URL = os.environ.get("DISCORD_PRERELEASE_WEBHOOK_URL", "")
-DISCORD_USERNAME = "Danke.moe"
+DISCORD_USERNAME = "ElPsyKongroo"
 DISCORD_PING_NEW_RELEASE = "<@&797689910890594305>" # @AllRelease
 DISCORD_PING_NEW_NSFW_RELEASE = "<@&992904261480497292>" # @NSFW Updates 
 DISCORD_PING_ONESHOT = "<@&797689909276180510>" # @OneShot
 DISCORD_PING_QC_ROLE = "<@&796228557256654858>"  # @Quality Control/Proofreading, to find that code, enter \@therole on discord
 DISCORD_PRERELEASE_MESSAGE = "If you found an issue with this release <:bonk:807730387115442257>, share it on <#875807668390993920>"
 
-BRANDING_NAME = "Danke fürs Lesen"
-BRANDING_DESCRIPTION = "Thank you for reading! A circle that works on random twitter and pixiv one-shots and the occasional cute manga."
+BRANDING_NAME = "ElPsyKongroo"
+BRANDING_DESCRIPTION = "El. Psy. Kongroo."
 BRANDING_IMAGE_URL = "https://danke.moe/static/img/thumbnail.png"
 
-HOME_BRANDING_NAME = "Home for scanlations of Danke fürs Lesen"
+HOME_BRANDING_NAME = "Home for scanlations of ElPsyKongroo"
 HOME_BRANDING_DESCRIPTION = "Read our latest chapters here."
 HOME_BRANDING_IMAGE_URL = "https://danke.moe/static/img/thumbnail.png"
 
