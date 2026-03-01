@@ -3,7 +3,7 @@ import os
 from .base import *
 
 
-CANONICAL_ROOT_DOMAIN = "danke.moe"
+CANONICAL_ROOT_DOMAIN = "elpsykongroo.cc"
 SECURE_HSTS_SECONDS = 60
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
@@ -19,12 +19,11 @@ X_FRAME_OPTIONS = "ALLOW"
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    "danke.moe",
-    "localhost",
-    "danke.mangadex.dev",
+    "elpsykongroo.cc",
+    "localhost"
 ]
 
-CANONICAL_SITE_NAME = "guya.moe"
+CANONICAL_SITE_NAME = "elpsykongroo.cc"
 
 LOGGING = {
     "version": 1,
